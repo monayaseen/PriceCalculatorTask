@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace PriceCalculatorTask
 {
@@ -7,19 +8,15 @@ namespace PriceCalculatorTask
         public string Name { get; set; }
         public int UPC { get; set; }
         public double price;
-
         public double Price
         {
             get { return price; }
             set { price = Math.Round(value, 2); }
-
         }
-        
-        Tax tax = new Tax();
-        public void PriceBeforeAndAfterTax()
+        public double PriceAfterTax(Tax tax)
         {
-            double PriceWithTax = Price * ( tax.taxPercentage) + Price;
-            Console.WriteLine($"${Price}$ before tax and ${PriceWithTax}$ after {tax.taxPercentage * 100}% tax");
+            double PriceWithTax = Math.Round(Price * ( tax.TaxPercentage) + Price,2);
+            return PriceWithTax;
         }
         
     }
