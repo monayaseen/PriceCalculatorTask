@@ -25,6 +25,15 @@ namespace PriceCalculatorTask
             return PriceAfterTax(tax)- PriceWithTaxAndDiscount;
         }
 
+        public void ProductPriceReport(Tax tax ,Discount discount)
+        {
+            Console.WriteLine($"{PriceAfterTaxAndDiscount(tax,discount)}$ is the Price And " +
+                              $"{ Math.Round(price * discount.DiscountPersantage,2)}$ was deduced");
+        }
        
+        public void ProductPriceReportWithNoDiscount(Tax tax ,Discount discount)
+        {
+            Console.WriteLine($"{PriceAfterTaxAndDiscount(tax,discount)}$ is the Price And No Discount. ");
+        }
     }
 }
