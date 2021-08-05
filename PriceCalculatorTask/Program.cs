@@ -6,7 +6,7 @@ namespace PriceCalculatorTask
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            
         }
     }
 }
