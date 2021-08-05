@@ -18,6 +18,13 @@ namespace PriceCalculatorTask
             double PriceWithTax = Math.Round(Price * ( tax.TaxPercentage) + Price,2);
             return PriceWithTax;
         }
-        
+
+        public double PriceAfterTaxAndDiscount(Tax tax ,Discount discount)
+        {
+            double PriceWithTaxAndDiscount = Math.Round((Price * discount.DiscountPersantage), 2);
+            return PriceAfterTax(tax)- PriceWithTaxAndDiscount;
+        }
+
+       
     }
 }
