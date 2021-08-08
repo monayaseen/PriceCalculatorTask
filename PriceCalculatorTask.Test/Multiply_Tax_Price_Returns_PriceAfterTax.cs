@@ -4,36 +4,66 @@ using PriceCalculatorTask;
 
 namespace PriceCalculatorTask.Test
 {
+    
     public class CheckTaxValidity
     {
-        [Fact]
-        public void Multiply_Tax_Price_Returns_PriceAfterTax()
+        
+        [Theory]
+        [InlineData(20.256, 20.26)]
+        [InlineData(21.234, 21.23)]
+        public void Price_TwoDecimalDigits(double price, double expectedPrice)
         {
             var product = new Product()
             {
-                Name = "The Little Prince",
-                UPC = 12345,
-                Price = 20.253,
+                Price = price
             };
-            var tax = new Tax(20);
-            var actual = product.PriceAfterTax(tax);
-            Assert.Equal(24.3,actual);
+            var actual = product.Price;
+            Assert.Equal(expectedPrice,actual);
         }
-
-        [Fact]
-        public void Multiply_Tax_Price_Discount_Returns_PriceAfterTaxAndDiscount()
+        
+       [Theory]
+       [InlineData(20,24.3)]
+       [InlineData(21,24.5)]
+        public void PriceAfterTax_Returns_PriceAfterTaxValue(double taxPercentage,double expected)
         {
             var product = new Product()
             {
-                Name = "The Little Prince",
-                UPC = 12345,
+                Price = 20.253,
+            };
+            var tax = new Tax(taxPercentage);
+            var actual = product.PriceAfterTax(tax);
+            Assert.Equal(expected,actual);
+        }
+        
+        [Theory]
+        [InlineData(15,21.26)]
+        public void PriceAfterTaxAndDiscount_Returns_PriceValue(double discountPercentage,double expected)
+        {
+            var product = new Product()
+            {
                 Price = 20.253,
             };
             var tax = new Tax(20);
-            var discount = new Discount(15);
+            var discount = new Discount(discountPercentage);
             var actual = product.PriceAfterTaxAndDiscount(tax, discount);
-            Assert.Equal(21.26,actual);
+            Assert.Equal(expected,actual);
 
+        }
+        [Theory]
+        [InlineData(20,12345,19.84)]
+        [InlineData(21,789,20.04)]
+        public void PriceAfterUPCDiscount_Returns_PriceValue(double taxPercentage,int upc,double expected)
+        {
+            var product = new Product()
+            {
+                Price = 20.253,
+                UPCDiscountPercentage=7,
+                _upc=upc
+            };
+            var tax = new Tax(taxPercentage);
+            var discount = new Discount(15);
+            var actual = product.PriceAfterUPCDiscount(tax,discount);
+            Assert.Equal(expected,actual);
         }
     }
 }
