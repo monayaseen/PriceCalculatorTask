@@ -4,19 +4,16 @@ namespace PriceCalculatorTask
 {
     public class Tax
     {
-        public double taxPercentage = 0.2;
+        private double _percentage = 0.2;
         public double TaxPercentage
         {
             get
             {
-                return taxPercentage;
+                return _percentage;
             }
             set
             {
-                bool isValidTaxPercentage = value >= 0 && value <= 100;
-                if (isValidTaxPercentage) 
-                    taxPercentage = value / 100.0;
-                else throw new Exception("Only from 0 to 100 Percentages are valid");
+                _percentage= value.CheckPercentageValidation();
             }
         }
         public Tax(double taxPercentage)

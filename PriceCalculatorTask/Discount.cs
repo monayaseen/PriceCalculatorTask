@@ -4,23 +4,26 @@ namespace PriceCalculatorTask
 {
     public class Discount
     {
-        private double discountPersantage = 0.0;
+        public bool _isDiscountBeforeTax = false;
 
-        public double DiscountPersantage
+        private double _percentage  = 0.0;
+        public double Percentage 
         {
-            get { return discountPersantage; }
+            get { return _percentage ; }
             set
             {
-                bool isValidDiscountPercentage = value >= 0 && value <= 100;
-                if (isValidDiscountPercentage)
-                    discountPersantage = value / 100.0;
-                else throw new Exception("Only from 0 to 100 Percentages are valid");
+                _percentage=value.CheckPercentageValidation();
             }
         }
+              //
+              // public double _discountType;
+              // private double _discountBeforeTax=0;
+              // private double _discountAfterTax=1;
 
-        public Discount(double discountPersantage)
-        {
-            DiscountPersantage = discountPersantage;
+              public Discount(double discountPercentage,bool isDiscountBeforeTax)
+              {
+                  _isDiscountBeforeTax= isDiscountBeforeTax ;
+            Percentage = discountPercentage;
         }
     }
 }
