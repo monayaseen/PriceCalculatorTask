@@ -15,12 +15,7 @@ namespace PriceCalculatorTask
                 _percentage=value.CheckPercentageValidation();
             }
         }
-              //
-              // public double _discountType;
-              // private double _discountBeforeTax=0;
-              // private double _discountAfterTax=1;
-
-              public Discount(double discountPercentage,bool isDiscountBeforeTax)
+        public Discount(double discountPercentage,bool isDiscountBeforeTax)
               {
                   _isDiscountBeforeTax= isDiscountBeforeTax ;
             Percentage = discountPercentage;

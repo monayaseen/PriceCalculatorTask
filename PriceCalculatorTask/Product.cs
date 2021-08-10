@@ -47,7 +47,7 @@ namespace PriceCalculatorTask
         }
         public double PriceAfterDiscountThenTax(Tax tax, Discount discount)
         {
-            return (PriceAfterDiscount(discount) * TaxAmount(tax)) +PriceAfterDiscount(discount);
+            return Math.Round(PriceAfterDiscount(discount)*tax.TaxPercentage  +PriceAfterDiscount(discount),2);
         }
         public double CalculatePriceWithTaxAndDiscount( Tax tax, Discount discount)
         {
@@ -69,7 +69,7 @@ namespace PriceCalculatorTask
             Console.WriteLine($"{PriceAfterTaxThenDiscount(tax,discount)}$ is the Price And No Discount. ");
         }
         
-        public double UPCDiscountAmount(Discount discount)
+        public double UPCDiscountAmount()
         {
             double upcDiscountAmount = Math.Round( UPCDiscountPercentage * Price, 2);
             return  upcDiscountAmount;
@@ -77,16 +77,34 @@ namespace PriceCalculatorTask
         
         public double PriceAfterUPCDiscount( Tax tax,Discount discount)
         {
-            return  Math.Round(PriceAfterTaxThenDiscount(tax, discount)-UPCDiscountAmount(discount),2);
+            return  Math.Round(PriceAfterTaxThenDiscount(tax, discount)-UPCDiscountAmount(),2);
         }
         public double CalculatePriceWithTaxAndUpcDiscount( Tax tax, Discount discount)
         {
             if (IsUpcDiscountBeforTax)
             {
-                return PriceAfterUPCDiscount(tax,discount) * UPCDiscountAmount(discount)+PriceAfterUPCDiscount(tax,discount);
+                return Math.Round(PriceAfterUPCDiscount(tax,discount) * _upcDiscountPercentage+PriceAfterUPCDiscount(tax,discount),2);
             } 
-            return PriceAfterUPCDiscount(tax,discount)- UPCDiscountAmount(discount);
-        } 
-        
+            return PriceAfterUPCDiscount(tax,discount)- UPCDiscountAmount();
+        }
+
+        public double TotalDiscountsAmount(Discount discount)
+        {
+            return ( DiscountAmount(discount)) + (UPCDiscountAmount());
+        }
+
+        public double PriceAfterTotalDiscount(Tax tax, Discount discount)
+        {
+            return  Math.Round(PriceAfterTax(tax)-TotalDiscountsAmount(discount),2);
+        }
+        public double TotalCostCalculation(AnotherCosts costs)
+        {
+            double packagingAmount = Price * (costs.PackagingCost);
+            return Math.Round( packagingAmount+costs.TransportCost,2) ;
+        }
+        public double TotalCost(Tax tax, Discount discount, AnotherCosts costs)
+        {
+            return Math.Round(PriceAfterTotalDiscount(tax, discount) + TotalCostCalculation(costs),2);
+        }
     }
 }
