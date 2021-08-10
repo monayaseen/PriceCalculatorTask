@@ -31,21 +31,22 @@ namespace PriceCalculatorTask.Test
                 Price = 20.253,
             };
             var tax = new Tax(taxPercentage);
-            var actual = product.PriceAfterTax(tax);
+            var actual = tax.PriceAfterTax(tax);
             Assert.Equal(expected,actual);
         }
         
         [Theory]
         [InlineData(15,21.26)]
         public void PriceAfterTaxAndDiscount_Returns_PriceValue(double discountPercentage,double expected)
-        {
-            var product = new Product()
-            {
-                Price = 20.253,
-            };
+        { var product = new Product()
+                     {
+                         Price = 20.253,
+                     };
+            var calculation = new Calculations(product);
+            
             var tax = new Tax(20);
             var discount = new Discount(discountPercentage,false);
-            var actual = product.PriceAfterTaxThenDiscount(tax, discount);
+            var actual = calculation.PriceAfterTaxThenDiscount(tax, discount);
             Assert.Equal(expected,actual);
 
         }
@@ -53,16 +54,18 @@ namespace PriceCalculatorTask.Test
         [InlineData(20,12345,19.84)]
         [InlineData(21,789,20.04)]
         public void PriceAfterUPCDiscount_Returns_PriceValue(double taxPercentage,int upc,double expected)
-        {
-            var product = new Product()
-            {
-                Price = 20.253,
-                UPCDiscountPercentage=7,
-                _upc=upc
-            };
+        { var product = new Product()
+                     {
+                         Price = 20.253,
+                         UPCDiscountPercentage=7,
+                         _upc=upc
+                     };
+            var calculation = new Calculations(product);
+
+            
             var tax = new Tax(taxPercentage);
             var discount = new Discount(15,false);
-            var actual = product.PriceAfterUPCDiscount(tax,discount);
+            var actual = calculation.PriceAfterUPCDiscount(tax,discount);
             Assert.Equal(expected,actual);
         }
         
@@ -77,9 +80,10 @@ namespace PriceCalculatorTask.Test
                 _upc=1234,
                 IsUpcDiscountBeforTax=true
             };
+            var calculation = new Calculations(product);
             var tax = new Tax(20);
             var discount = new Discount(15,false);
-            var actual = product.CalculatePriceWithTaxAndUpcDiscount(tax,discount);
+            var actual = calculation.CalculatePriceWithTaxAndUpcDiscount(tax,discount);
             Assert.Equal(expected,actual);
         }
         
@@ -94,9 +98,10 @@ namespace PriceCalculatorTask.Test
                 _upc=1234,
                 IsUpcDiscountBeforTax=true
             };
+            var calculation = new Calculations(product);
             var tax = new Tax(20);
             var discount = new Discount(15,true);
-            var actual = product.CalculatePriceWithTaxAndDiscount(tax,discount);
+            var actual = calculation.CalculatePriceWithTaxAndDiscount(tax,discount);
             Assert.Equal(expected,actual);
         }
         
@@ -119,7 +124,9 @@ namespace PriceCalculatorTask.Test
                 PackagingCost=1,
                 TransportCost=2.2
             };
-                var actual = product.TotalCost(tax,discount,costs);
+            var calculation = new Calculations(product);
+
+                var actual = calculation.TotalCost(tax,discount,costs);
             Assert.Equal(expected,actual);
         }
     }
